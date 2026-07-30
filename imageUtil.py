@@ -1,35 +1,45 @@
-from pyautogui import *
-import pyautogui
 import time
-import keyboard
-import random
-import win32api, win32con
-import sys
-import multiprocessing
 
-def findImageCenter(name, region = None, gray = True, con = .9):
-	try:
-		file = name + '.png'
-		if region != None: 
-			return pyautogui.locateCenterOnScreen(file, region = region, confidence = con, grayscale = gray)
-		else:
-			return pyautogui.locateCenterOnScreen(file, confidence = con, grayscale = gray)
-	except pyautogui.ImageNotFoundException:
-		return None
-
-def findImageCords(name, region = None, gray = None, con = .9):
-	try:
-		file = name + '.png'
-		if region != None: 
-			return pyautogui.locateOnScreen(file, region = region, confidence = con, grayscale = gray)
-		else:
-			return pyautogui.locateOnScreen(file, confidence = con, grayscale = gray)
-	except pyautogui.ImageNotFoundException:
-		return None
+import pyautogui
 
 
-def clickOnImage(name, region = None, gray = None, con = .9):
-	while (center := findImageCenter(name, region, gray = gray, con = con)) == None:
-		time.sleep(1)
-	pyautogui.moveTo(center[0], center[1])
-	pyautogui.click(button='left')
+def findImageCenter(name, region=None, gray=True, con=.9):
+    try:
+        file = name + '.png'
+        if region is not None:
+            return pyautogui.locateCenterOnScreen(file, region=region, confidence=con, grayscale=gray)
+        else:
+            return pyautogui.locateCenterOnScreen(file, confidence=con, grayscale=gray)
+    except pyautogui.ImageNotFoundException:
+        return None
+
+
+def findImageCords(name, region=None, gray=None, con=.9):
+    try:
+        file = name + '.png'
+        if region is not None:
+            return pyautogui.locateOnScreen(file, region=region, confidence=con, grayscale=gray)
+        else:
+            return pyautogui.locateOnScreen(file, confidence=con, grayscale=gray)
+    except pyautogui.ImageNotFoundException:
+        return None
+
+
+def waitForImageCenter(name, region=None, gray=True, con=.9, poll=1):
+    while (result := findImageCenter(name, region, gray, con)) is None:
+        if poll:
+            time.sleep(poll)
+    return result
+
+
+def waitForImageCords(name, region=None, gray=None, con=.9, poll=1):
+    while (result := findImageCords(name, region, gray, con)) is None:
+        if poll:
+            time.sleep(poll)
+    return result
+
+
+def clickOnImage(name, region=None, gray=None, con=.9):
+    center = waitForImageCenter(name, region, gray, con)
+    pyautogui.moveTo(center[0], center[1])
+    pyautogui.click(button='left')

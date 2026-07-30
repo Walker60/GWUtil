@@ -1,14 +1,13 @@
-from pyautogui import *
-import pyautogui
-import time
-import keyboard
+import os
 import sys
-sys.path.insert(1, 'C:/Users/12069/Dropbox/Scripts/Bots/Util')
-sys.path.insert(1, 'C:/Users/Chris Walker/Dropbox/Scripts/Bots/Util')
+
+import keyboard
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import imageUtil
 
 imagePath = "Images/"
 
-while(not keyboard.is_pressed('1')):
-	imageUtil.clickOnImage(imagePath + "Forge", gray = False)
-	imageUtil.clickOnImage(imagePath + "Refill", gray = False)
+while not keyboard.is_pressed('1'):
+    imageUtil.clickOnImage(imagePath + "Forge", gray=False)
+    imageUtil.clickOnImage(imagePath + "Refill", gray=False)
